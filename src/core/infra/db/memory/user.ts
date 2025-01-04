@@ -7,7 +7,7 @@ export default class UserTable implements IUserRepository {
   users;
 
   public constructor(initialTableState?: UserModel[]) {
-    this.users = initialTableState || user;
+    this.users = initialTableState || [...user];
   }
 
   async create(user: UserModel) {
@@ -38,7 +38,7 @@ export default class UserTable implements IUserRepository {
   }
 
   async listAll() {
-    return this.users || [];
+    return this.users;
   }
 
   async update(user: UserModel) {
