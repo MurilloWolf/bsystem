@@ -4,10 +4,6 @@ import mockParts from "../mock/part.table";
 describe("DB Memory - Part", () => {
   let dbPart = new Part([]);
 
-  beforeEach(() => {
-    dbPart = new Part([]);
-  });
-
   it("Should create a new part", async () => {
     const newPart = {
       id: "X",
@@ -18,6 +14,8 @@ describe("DB Memory - Part", () => {
       priceRange: "normal",
       image: "image.jpg",
     };
+
+    dbPart = new Part([]);
 
     const response = await dbPart.create(newPart);
     expect(response).toStrictEqual(newPart);
@@ -82,15 +80,17 @@ describe("DB Memory - Part", () => {
     expect(response).toBe(true);
   });
 
-  it("Should return null if part not found", async () => {
-    dbPart = new Part();
-    const response = await dbPart.findById("100");
-    expect(response).toBeNull();
-  });
+  describe("Error cases", () => {
+    it("Should return null if part not found", async () => {
+      dbPart = new Part();
+      const response = await dbPart.findById("100");
+      expect(response).toBeNull();
+    });
 
-  it("Should return null if part not found by name", async () => {
-    dbPart = new Part();
-    const response = await dbPart.findByName("Part not found");
-    expect(response).toBeNull();
+    it("Should return null if part not found by name", async () => {
+      dbPart = new Part();
+      const response = await dbPart.findByName("Part not found");
+      expect(response).toBeNull();
+    });
   });
 });

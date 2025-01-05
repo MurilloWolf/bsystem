@@ -11,11 +11,9 @@ describe("DB In Memory - Service", () => {
     category: "operational",
   };
 
-  beforeEach(() => {
-    dbService = new ServiceTable([]);
-  });
-
   it("should create a service", async () => {
+    dbService = new ServiceTable([]);
+
     const newService = service1;
 
     const result = await dbService.create(newService);
@@ -72,15 +70,17 @@ describe("DB In Memory - Service", () => {
     ]);
   });
 
-  it("Should return null if there is no service with the id", async () => {
-    dbService = new ServiceTable([]);
-    const result = await dbService.findById("Y");
-    expect(result).toBeNull();
-  });
+  describe("Error cases", () => {
+    it("Should return null if there is no service with the id", async () => {
+      dbService = new ServiceTable([]);
+      const result = await dbService.findById("Y");
+      expect(result).toBeNull();
+    });
 
-  it("Should return a empty array if there is no service", async () => {
-    dbService = new ServiceTable([]);
-    const result = await dbService.findAll();
-    expect(result).toStrictEqual([]);
+    it("Should return a empty array if there is no service", async () => {
+      dbService = new ServiceTable([]);
+      const result = await dbService.findAll();
+      expect(result).toStrictEqual([]);
+    });
   });
 });

@@ -17,11 +17,10 @@ describe("DB In Memory - User", () => {
     companyName: null,
     birthdate: new Date(),
   };
-  beforeEach(() => {
-    dbUser = new UserTable([]);
-  });
 
   it("Should create a new user", async () => {
+    dbUser = new UserTable([]);
+
     const newUser = user1;
     const response = await dbUser.create(newUser);
     expect(response).toStrictEqual(newUser);
@@ -86,35 +85,37 @@ describe("DB In Memory - User", () => {
     expect(response).toBe(true);
   });
 
-  it("Should return null if user not found", async () => {
-    dbUser = new UserTable();
-    const response = await dbUser.findById("100");
-    expect(response).toBeNull();
-  });
+  describe("Error cases", () => {
+    it("Should return null if user not found", async () => {
+      dbUser = new UserTable();
+      const response = await dbUser.findById("100");
+      expect(response).toBeNull();
+    });
 
-  it("Should not create a user if email already exist", async () => {
-    dbUser = new UserTable();
-    const newUser = { ...user1, email: "support@gamatech.com" };
-    const response = await dbUser.create(newUser);
-    expect(response).toBeNull();
-  });
+    it("Should not create a user if email already exist", async () => {
+      dbUser = new UserTable();
+      const newUser = { ...user1, email: "support@gamatech.com" };
+      const response = await dbUser.create(newUser);
+      expect(response).toBeNull();
+    });
 
-  it("Should not create a user if cpf already exist", async () => {
-    dbUser = new UserTable();
-    const newUser = { ...user1, cpf: "123.456.789-00" };
-    const response = await dbUser.create(newUser);
-    expect(response).toBeNull();
-  });
+    it("Should not create a user if cpf already exist", async () => {
+      dbUser = new UserTable();
+      const newUser = { ...user1, cpf: "123.456.789-00" };
+      const response = await dbUser.create(newUser);
+      expect(response).toBeNull();
+    });
 
-  it("Should return a empty array if user not found by name", async () => {
-    dbUser = new UserTable();
-    const response = await dbUser.findByName("Not Found");
-    expect(response).toStrictEqual([]);
-  });
+    it("Should return a empty array if user not found by name", async () => {
+      dbUser = new UserTable();
+      const response = await dbUser.findByName("Not Found");
+      expect(response).toStrictEqual([]);
+    });
 
-  it("Should return a empty array if there is no user", async () => {
-    dbUser = new UserTable([]);
-    const response = await dbUser.listAll();
-    expect(response).toStrictEqual([]);
+    it("Should return a empty array if there is no user", async () => {
+      dbUser = new UserTable([]);
+      const response = await dbUser.listAll();
+      expect(response).toStrictEqual([]);
+    });
   });
 });
