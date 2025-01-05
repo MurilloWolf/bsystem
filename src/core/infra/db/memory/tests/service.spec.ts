@@ -82,5 +82,11 @@ describe("DB In Memory - Service", () => {
       const result = await dbService.findAll();
       expect(result).toStrictEqual([]);
     });
+
+    it("Should return null if the given name already exists on create", async () => {
+      dbService = new ServiceTable();
+      const result = await dbService.create(mockService[0]);
+      expect(result).toBeNull();
+    });
   });
 });

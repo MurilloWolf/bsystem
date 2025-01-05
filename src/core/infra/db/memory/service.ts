@@ -10,6 +10,11 @@ export default class Service implements IServiceRepository {
   }
 
   public async create(service: ServiceModel) {
+    const nameExist = await this.findByName(service.name);
+    if (nameExist) {
+      return null;
+    }
+
     this.services.push(service);
     return service;
   }
@@ -41,5 +46,10 @@ export default class Service implements IServiceRepository {
   public async getAllCategories() {
     const categories = this.services.map((service) => service.category);
     return [...new Set(categories)];
+  }
+
+  public async findByName(name: string) {
+    const service = this.services.find((service) => service.name === name);
+    return service || null;
   }
 }
