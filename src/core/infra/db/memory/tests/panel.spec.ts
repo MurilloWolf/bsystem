@@ -52,9 +52,9 @@ describe("DB Memory - Panel", () => {
     expect(panels).toHaveLength(90);
   });
 
-  it("Should find a panel by name", async () => {
+  it("Should find a panel by model", async () => {
     dbPanel = new Panel();
-    const panel = await dbPanel.findByName("Canadian Solar 5kW 220V");
+    const panel = await dbPanel.findByModel("Canadian Solar 5kW 220V");
 
     expect(panel).toStrictEqual(mockPanel[0]);
   });
@@ -129,7 +129,21 @@ describe("DB Memory - Panel", () => {
 
     it("Should return null if the panel does not exist", async () => {
       dbPanel = new Panel();
-      const panel = await dbPanel.findByName("X");
+      const panel = await dbPanel.findByModel("X");
+
+      expect(panel).toBeNull();
+    });
+
+    it("Should return an empty array if the panel does not exist", async () => {
+      dbPanel = new Panel();
+      const panels = await dbPanel.findAllByPower(0);
+
+      expect(panels).toHaveLength(0);
+    });
+
+    it("Should return null if the panel with the geven name already exists", async () => {
+      dbPanel = new Panel();
+      const panel = await dbPanel.create(mockPanel[0]);
 
       expect(panel).toBeNull();
     });

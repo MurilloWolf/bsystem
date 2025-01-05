@@ -10,6 +10,10 @@ export default class Panel implements IPanelRepository {
   }
 
   public async create(panel: PanelModel) {
+    const nameExist = await this.findByModel(panel.model);
+    if (nameExist) {
+      return null;
+    }
     this.panels.push(panel);
     return panel;
   }
@@ -31,8 +35,8 @@ export default class Panel implements IPanelRepository {
     return this.panels.filter((panel) => panel.voltage === voltage);
   }
 
-  public async findByName(name: string) {
-    return this.panels.find((panel) => panel.model.includes(name)) || null;
+  public async findByModel(model: string) {
+    return this.panels.find((panel) => panel.model.includes(model)) || null;
   }
 
   public async findAllByProducer(producer: string) {
