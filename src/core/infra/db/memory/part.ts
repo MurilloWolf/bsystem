@@ -10,6 +10,10 @@ export default class Part implements IPartRepository {
   }
 
   public async create(part: PartModel) {
+    const nameExist = await this.findByName(part.name);
+    if (nameExist) {
+      return null;
+    }
     this.parts.push(part);
     return part;
   }

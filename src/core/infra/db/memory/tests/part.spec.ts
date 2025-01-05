@@ -92,5 +92,21 @@ describe("DB Memory - Part", () => {
       const response = await dbPart.findByName("Part not found");
       expect(response).toBeNull();
     });
+
+    it("Should return null if the given part already exists on create", async () => {
+      dbPart = new Part();
+      const part = {
+        id: "1",
+        name: "Cabo fases 6mm",
+        description: "Cabos de fases de 6mm",
+        price: 4.6,
+        category: "cabos",
+        priceRange: "normal",
+        image: "",
+      };
+
+      const response = await dbPart.create(part);
+      expect(response).toBeNull();
+    });
   });
 });
