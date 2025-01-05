@@ -59,6 +59,31 @@ describe("DB Memory - Panel", () => {
     expect(panel).toStrictEqual(mockPanel[0]);
   });
 
+  it("Should find all panels by producer", async () => {
+    dbPanel = new Panel();
+    const panels = await dbPanel.findAllByProducer("Canadian");
+
+    expect(panels).toHaveLength(11);
+  });
+
+  it("Should get all producers", async () => {
+    dbPanel = new Panel();
+    const producers = await dbPanel.getAllProducent();
+
+    expect(producers).toHaveLength(9);
+    expect(producers).toEqual([
+      "Canadian",
+      "Deye",
+      "Fronius",
+      "Growatt",
+      "Hoymilles",
+      "Huawei",
+      "SAJ",
+      "Solis",
+      "Sungrow",
+    ]);
+  });
+
   it("Should update a panel", async () => {
     dbPanel = new Panel();
     const panel = {

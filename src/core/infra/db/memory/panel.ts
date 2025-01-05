@@ -35,6 +35,14 @@ export default class Panel implements IPanelRepository {
     return this.panels.find((panel) => panel.model.includes(name)) || null;
   }
 
+  public async findAllByProducer(producer: string) {
+    return this.panels.filter((panel) => panel.producer.includes(producer));
+  }
+
+  public async getAllProducent() {
+    const producent = this.panels.map((panel) => panel.producer);
+    return [...new Set(producent)];
+  }
   public async update(panel: PanelModel): Promise<PanelModel> {
     const index = this.panels.findIndex((p) => p.id === panel.id);
     this.panels[index] = panel;
