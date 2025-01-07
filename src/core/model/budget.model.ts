@@ -1,10 +1,27 @@
 import { PartBudgetModel } from "./part.model";
-import { ServiceBudgetModel } from "./service.model";
+// import { ServiceBudgetModel } from "./service.model";
 
 export type BudgetModel = {
   id: string;
-  client_id: string; // client_id from client
-  user_id: string; // user_id from user
+  clientId: string; // client_id from client
+  userId: string; // user_id from user
   parts: PartBudgetModel[];
-  services: ServiceBudgetModel[];
+  // services: ServiceBudgetModel[];
+  total: number;
+  date: Date;
+  status: "pending" | "approved" | "rejected";
+  paymentMethod: "credit" | "debit" | "cash";
+  paymentStatus: "paid" | "pending";
+  paymentDate: Date;
+  commission: number;
+  discount: number;
+};
+
+export type BudgetDTO = {
+  clientId: string;
+  userId: string;
+  total: number;
+  paymentMethod: "credit" | "debit" | "cash";
+  commission: number;
+  discount: number;
 };
