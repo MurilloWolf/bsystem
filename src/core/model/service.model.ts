@@ -8,6 +8,18 @@ export type ServiceModel = {
 
 export type ServiceBudgetModel = {
   id: string;
-  service_id: string;
-  budget_id: string;
+  serviceId: string;
+  budgetId: string;
+  quantity: number;
+};
+
+export type ServiceBudgetDTO = {
+  serviceId: string;
+  quantity: number;
+};
+
+export type ServiceBudgetDTOCreate = {
+  budgetId: string;
+  serviceId: string;
+  quantity: number;
 };
