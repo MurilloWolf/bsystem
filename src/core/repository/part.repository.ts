@@ -21,6 +21,5 @@ export interface IPartBudgetRepository {
   update(PartBudget: PartBudgetModel): Promise<PartBudgetModel>;
   delete(id: string): Promise<boolean>;
   changeQuantity(id: string, quantity: number): Promise<PartBudgetModel | null>;
-
   findPartsByBudgetId(budgetId: string): Promise<PartBudgetModel[]>;
 }
