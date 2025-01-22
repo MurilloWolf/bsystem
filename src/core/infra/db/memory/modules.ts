@@ -10,7 +10,7 @@ export default class Modules implements IModulesRepository {
   }
 
   async create(newModule: ModuleModel) {
-    const nameExist = await this.findByName(newModule.name);
+    const nameExist = await this.findByModel(newModule.model);
     if (nameExist) {
       return null;
     }
@@ -38,8 +38,8 @@ export default class Modules implements IModulesRepository {
     return this.modules.filter((item) => item.producer === producer);
   }
 
-  async findByName(name: string) {
-    return this.modules.find((item) => item.name.includes(name)) || null;
+  async findByModel(model: string) {
+    return this.modules.find((item) => item.model.includes(model)) || null;
   }
 
   async update(updateModule: ModuleModel) {

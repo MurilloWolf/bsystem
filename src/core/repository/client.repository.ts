@@ -1,7 +1,7 @@
-import { ClientModel } from "../model/client.model";
+import { ClientModel, CreateClientDTO } from "../model/client.model";
 
 export default interface IClientRepository {
-  create(newClient: ClientModel): Promise<ClientModel | null>;
+  create(newClient: CreateClientDTO): Promise<ClientModel | null>;
   findAll(): Promise<ClientModel[]>;
   findById(id: string): Promise<ClientModel | null>;
   findAllByUserId(userId: string): Promise<ClientModel[] | null>;

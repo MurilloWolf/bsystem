@@ -1,6 +1,6 @@
 import IClientRepository from "@/core/repository/client.repository";
 import mockClients from "./mock/client.table";
-import { ClientModel } from "@/core/model/client.model";
+import { ClientModel, CreateClientDTO } from "@/core/model/client.model";
 import UserTable from "./user";
 
 export default class Client implements IClientRepository {
@@ -18,7 +18,7 @@ export default class Client implements IClientRepository {
    * @param newClient
    * @returns
    */
-  async create(newClient: ClientModel) {
+  async create(newClient: CreateClientDTO) {
     const dbUser = new UserTable();
 
     const emailExist = await this.findByEmail(newClient.email);
@@ -28,8 +28,14 @@ export default class Client implements IClientRepository {
     if (emailExist || documentExist || !userExist) {
       return null;
     }
-    this.clients.push(newClient);
-    return newClient;
+
+    const client = {
+      ...newClient,
+      id: Math.random().toString(36).substr(2, 9),
+    };
+
+    this.clients.push(client);
+    return client;
   }
 
   async findAll() {
@@ -60,7 +66,8 @@ export default class Client implements IClientRepository {
   }
 
   async findAllByUserId(userId: string) {
-    const client = this.clients.filter((item) => item.userId === userId);
-    return client.length ? client : null;
+    const clients = this.clients.filter((item) => item.userId === userId);
+    console.log(clients);
+    return clients.length ? clients : null;
   }
 }

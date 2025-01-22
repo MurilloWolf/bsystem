@@ -1,6 +1,9 @@
-import { PartBudgetDTOCreate, PartBudgetModel } from "@/core/model/part.model";
-import { IPartBudgetRepository } from "@/core/repository/part.repository";
-import Part from "./part";
+import {
+  PartBudgetDTOCreate,
+  PartBudgetModel,
+} from "@/core/model/material.model";
+import { IPartBudgetRepository } from "@/core/repository/material.repository";
+import Part from "./material";
 import mockPartBudget from "./mock/part-budget.table";
 
 export default class PartBudget implements IPartBudgetRepository {

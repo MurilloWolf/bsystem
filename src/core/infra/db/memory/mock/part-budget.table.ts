@@ -1,4 +1,4 @@
-import { PartBudgetModel } from "@/core/model/part.model";
+import { PartBudgetModel } from "@/core/model/material.model";
 
 const partsBudget: PartBudgetModel[] = [
   {

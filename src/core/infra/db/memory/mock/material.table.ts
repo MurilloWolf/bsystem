@@ -1,14 +1,14 @@
-import { PartModel } from "@/core/model/part.model";
+import { MaterialModel } from "@/core/model/material.model";
 
 // this is real data from the project
-const part: PartModel[] = [
+const part: MaterialModel[] = [
   {
     id: "1",
     name: "Cabo fases 6mm",
     description: "Cabos de fases de 6mm",
     price: 4.6,
     category: "cabos",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -17,7 +17,7 @@ const part: PartModel[] = [
     description: "Cabo de fases de 10mm",
     price: 8.3,
     category: "cabos",
-    priceRange: "high",
+    powerRange: "medium",
     image: "",
   },
   {
@@ -26,7 +26,7 @@ const part: PartModel[] = [
     description: "",
     price: 3.05,
     category: "cabos",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -35,7 +35,7 @@ const part: PartModel[] = [
     description: "",
     price: 26.5,
     category: "cabos",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -44,7 +44,7 @@ const part: PartModel[] = [
     description: "",
     price: 18,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -53,7 +53,7 @@ const part: PartModel[] = [
     description: "",
     price: 28.5,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -62,7 +62,7 @@ const part: PartModel[] = [
     description: "Parafuso de 8mm",
     price: 0.3,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -71,7 +71,7 @@ const part: PartModel[] = [
     description: "Buca de 4mm",
     price: 0.2,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -80,7 +80,7 @@ const part: PartModel[] = [
     description: "",
     price: 0.45,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -89,7 +89,7 @@ const part: PartModel[] = [
     description: "",
     price: 0.7,
     category: "",
-    priceRange: "high",
+    powerRange: "medium",
     image: "",
   },
   {
@@ -98,7 +98,7 @@ const part: PartModel[] = [
     description: "",
     price: 0.75,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -107,7 +107,7 @@ const part: PartModel[] = [
     description: "",
     price: 7.2,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
   {
@@ -116,7 +116,7 @@ const part: PartModel[] = [
     description: "",
     price: 9.5,
     category: "",
-    priceRange: "high",
+    powerRange: "medium",
     image: "",
   },
   {
@@ -125,7 +125,7 @@ const part: PartModel[] = [
     description: "",
     price: 7,
     category: "",
-    priceRange: "normal",
+    powerRange: "low",
     image: "",
   },
 ];

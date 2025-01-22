@@ -1,4 +1,4 @@
-import PartBudget from "../part-budget";
+import PartBudget from "../material-budget";
 
 jest.spyOn(Math, "random").mockReturnValue(0.123456789);
 

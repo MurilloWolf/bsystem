@@ -1,15 +1,15 @@
-import { PartModel } from "@/core/model/part.model";
-import IPartRepository from "@/core/repository/part.repository";
-import part from "./mock/part.table";
+import { MaterialModel } from "@/core/model/material.model";
+import IMaterialRepository from "@/core/repository/material.repository";
+import part from "./mock/material.table";
 
-export default class Part implements IPartRepository {
+export default class Material implements IMaterialRepository {
   private parts;
 
-  public constructor(initialTableState?: PartModel[]) {
+  public constructor(initialTableState?: MaterialModel[]) {
     this.parts = initialTableState || [...part];
   }
 
-  public async create(part: PartModel) {
+  public async create(part: MaterialModel) {
     const nameExist = await this.findByName(part.name);
     if (nameExist) {
       return null;
@@ -48,7 +48,7 @@ export default class Part implements IPartRepository {
     return this.parts.filter((part) => part.category === category);
   }
 
-  public async update(part: PartModel) {
+  public async update(part: MaterialModel) {
     const index = this.parts.findIndex((p) => p.id === part.id);
     this.parts[index] = part;
     return part;

@@ -45,10 +45,10 @@ describe("DB Memory - Modules", () => {
     expect(response).toHaveLength(3);
   });
 
-  it("should return a module by name", async () => {
+  it("should return a module by model", async () => {
     modules = new Modules();
 
-    const response = await modules.findByName("Canadian Solar");
+    const response = await modules.findByModel("Canadian Solar");
     expect(response).toEqual(mockModules[0]);
   });
 
@@ -57,9 +57,9 @@ describe("DB Memory - Modules", () => {
 
     const response = await modules.update({
       ...mockModules[0],
-      name: "Updated Name",
+      model: "Updated Model",
     });
-    expect(response.name).toEqual("Updated Name");
+    expect(response.model).toEqual("Updated Model");
   });
 
   it("should delete a module", async () => {
@@ -110,7 +110,7 @@ describe("DB Memory - Modules", () => {
     it("should return null if module not found by name", async () => {
       modules = new Modules();
 
-      const response = await modules.findByName("invalid-name");
+      const response = await modules.findByModel("invalid-name");
       expect(response).toBeNull();
     });
   });

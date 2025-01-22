@@ -7,7 +7,7 @@ export default interface IModulesRepository {
   findAllByPower(power: number): Promise<ModuleModel[]>;
   findAllByType(type: "mono" | "bifacial" | "poly"): Promise<ModuleModel[]>;
   findAllByProducer(producer: string): Promise<ModuleModel[]>;
-  findByName(name: string): Promise<ModuleModel | null>;
+  findByModel(model: string): Promise<ModuleModel | null>;
   update(updateModule: ModuleModel): Promise<ModuleModel>;
   delete(id: string): Promise<boolean>;
 }

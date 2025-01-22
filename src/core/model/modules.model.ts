@@ -1,6 +1,6 @@
 export type ModuleModel = {
   id: string;
-  name: string;
+  model: string;
   description: string;
   price: number;
   power: number;

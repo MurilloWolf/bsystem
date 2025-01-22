@@ -1,6 +1,25 @@
 import Image from "next/image";
-
+import CreateBudget from "@/core/use-cases/create-budget";
+import Budget from "@/core/infra/db/memory/budget";
+import PartBudget from "@/core/infra/db/memory/material-budget";
 export default function Home() {
+  const createBudget = new CreateBudget(new Budget(), new PartBudget());
+
+  createBudget.execute({
+    userId: "1",
+    clientId: "1",
+    parts: [
+      { partId: "1", quantity: 2 },
+      { partId: "2", quantity: 1 },
+    ],
+    total: 100,
+    status: "pending",
+    paymentMethod: "credit",
+    paymentDate: new Date(),
+    commission: 10,
+    discount: 5,
+  });
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">

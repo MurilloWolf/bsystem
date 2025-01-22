@@ -37,7 +37,7 @@ export default function Toolbox() {
 
   return (
     <aside
-      className={`flex flex-row h-full absolute top-[60px] right-0 bg-gray-50 transition-all ease-in-out duration-600`}
+      className={`flex flex-row min-h-screen h-full absolute top-[60px] right-0 bg-gray-100 transition-all ease-in-out duration-600`}
     >
       <div className="w-12 flex flex-col justify-center items-center gap-4 py-4 ">
         {tools.map((tool, index) => (

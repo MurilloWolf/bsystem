@@ -1,4 +1,4 @@
-import { PartBudgetModel } from "./part.model";
+import { PartBudgetModel } from "./material.model";
 // import { ServiceBudgetModel } from "./service.model";
 
 export type BudgetModel = {
