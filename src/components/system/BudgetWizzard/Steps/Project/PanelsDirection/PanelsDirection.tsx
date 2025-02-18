@@ -22,7 +22,6 @@ import {
   TableRow,
 } from "@/components/ui";
 
-import { Separator } from "@radix-ui/react-select";
 import { useForm } from "react-hook-form";
 import PanelsAnglesTemplate from "./PanelsAnglesTemplate";
 

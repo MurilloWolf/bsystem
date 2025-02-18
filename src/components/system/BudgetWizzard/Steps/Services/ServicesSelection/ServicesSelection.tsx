@@ -1,3 +1,4 @@
+import useService from "@/app/context/App/hooks/useService";
 import { useControllerContext } from "@/app/context/Controller";
 import {
   Button,
@@ -7,11 +8,6 @@ import {
   Input,
   Popover,
   PopoverTrigger,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Separator,
   Table,
   TableBody,
@@ -21,49 +17,47 @@ import {
   Checkbox,
   CardFooter,
 } from "@/components/ui";
-import { MaterialModel } from "@/core/model/material.model";
+import { ServiceModel } from "@/core/model/service.model";
+import { Label } from "@radix-ui/react-label";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { ArrowDown, ArrowUp, ArrowUpDown, Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
-export default function MaterialsSelection() {
-  const { MaterialRepository } = useControllerContext();
-  const [materialsRange, setMaterialsRange] = useState("low");
+export default function ServicesSelection() {
+  const { addServices } = useService();
+  const { ServiceRepository } = useControllerContext();
+
   const [openTablePopover, setOpenTablePopover] = useState(false);
-  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [services, setServices] = useState<ServiceModel[]>([]);
   const [selectedAll, setSelectedAll] = useState(false);
   const [search, setSearch] = useState("");
   const [ordenation, setOrdenation] = useState("default");
-  const [materials, setMaterials] = useState<MaterialModel[]>([]);
-  const [filteredMaterials, setFilteredMaterials] = useState<MaterialModel[]>(
-    []
-  );
+  const [filteredServices, setFilteredServices] = useState<ServiceModel[]>([]);
   const [searchValue] = useDebounce(search, 800);
 
-  const handleSelectMaterial = (id: string) => {
-    const isSelected = selectedMaterials.includes(id);
+  const handleSelectService = (id: string) => {
+    const isSelected = selectedServices.includes(id);
 
     if (isSelected) {
-      setSelectedMaterials((prev) =>
-        prev.filter((material) => material !== id)
-      );
+      setSelectedServices((prev) => prev.filter((service) => service !== id));
       return;
     }
-    setSelectedMaterials((prev) => [...prev, id]);
+    setSelectedServices((prev) => [...prev, id]);
   };
 
   const handleSelectAll = useCallback(() => {
-    const allMaterials = materials.map((material) => material.id);
-    setSelectedMaterials(allMaterials);
-  }, [materials]);
+    const allServices = services.map((services) => services.id);
+    setSelectedServices(allServices);
+  }, [services]);
 
   const handleDisselectAll = useCallback(() => {
-    setSelectedMaterials([]);
+    setSelectedServices([]);
   }, []);
 
   const filterByRange = useCallback(
-    (ordenation: string, range: string, data: MaterialModel[]) => {
+    (ordenation: string, data: ServiceModel[]) => {
       return [...data].sort((a, b) => {
         if (ordenation === "desc") {
           return a.price - b.price;
@@ -79,19 +73,10 @@ export default function MaterialsSelection() {
 
   const changeOrdenation = (value: string) => {
     setOrdenation(value);
-    const sortedMaterials = filterByRange(value, materialsRange, materials);
+    const sortedServices = filterByRange(value, services);
 
-    setFilteredMaterials(sortedMaterials);
+    setFilteredServices(sortedServices);
     setOpenTablePopover(false);
-  };
-
-  const changeMaterialsRange = (range: string) => {
-    setMaterialsRange(range);
-
-    const filtered = filteredMaterials.filter(
-      (material) => material.powerRange === range
-    );
-    setFilteredMaterials(filtered);
   };
 
   const getOdernationIcon = () => {
@@ -109,22 +94,30 @@ export default function MaterialsSelection() {
   };
 
   const handleSearch = useCallback(() => {
-    const filtered = materials.filter((material) =>
-      material.name.toLowerCase().includes(searchValue.toLowerCase())
+    const filtered = services.filter((services) =>
+      services.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
-    const filteredByPower =
-      materialsRange === "all"
-        ? [...filtered]
-        : filtered.filter((material) => material.powerRange === materialsRange);
+    const filteredOrdered = filterByRange(ordenation, filtered);
+    setFilteredServices(filteredOrdered);
+  }, [services, filterByRange, ordenation, searchValue]);
 
-    const filteredOrdered = filterByRange(
-      ordenation,
-      materialsRange,
-      filteredByPower
-    );
-    setFilteredMaterials(filteredOrdered);
-  }, [materials, filterByRange, ordenation, materialsRange, searchValue]);
+  const handleSaveSelectedServices = () => {
+    const selected = services
+      .filter((service) => selectedServices.includes(service.id))
+      .map((service) => ({
+        ...service,
+        quantity: 1,
+        total: service.price,
+        // TODO: fix this - category is no used in the model
+        category: service.category || "",
+      }));
+
+    console.log("SELECTED", selected);
+    addServices(selected);
+    setSelectedAll(false);
+    handleDisselectAll();
+  };
 
   useEffect(() => {
     if (selectedAll) {
@@ -138,24 +131,22 @@ export default function MaterialsSelection() {
   useEffect(handleSearch, [searchValue, handleSearch]);
 
   useEffect(() => {
-    const fetchMaterials = async () => {
-      const materials = await MaterialRepository.findAll();
-
-      setMaterials(materials);
-      setFilteredMaterials(materials);
+    const fetchServices = async () => {
+      const response = await ServiceRepository.findAll();
+      setServices(response);
+      setFilteredServices(response);
       return;
     };
 
-    fetchMaterials();
-  }, [MaterialRepository]);
+    fetchServices();
+  }, [ServiceRepository]);
 
   return (
     <section className="overflow-scroll">
       <CardHeader>
-        <h3>Lista de materiais</h3>
+        <h3>Lista de serviços</h3>
         <CardDescription>
-          Recomendamos usar a lista de material até <strong>6.000kW</strong> de
-          potência
+          Adicione os serviços prestados para o orçamento
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -166,28 +157,12 @@ export default function MaterialsSelection() {
           <div className="flex flex-col gap-1 w-1/3 ">
             <Input
               className="h-8"
-              id="material-search"
-              placeholder="Parafuso 8mm"
+              id="service-search"
+              placeholder="Pesquisar"
               value={search}
               onChange={handleChangeSearch}
             />
           </div>
-          <Select
-            onValueChange={changeMaterialsRange}
-            defaultValue={materialsRange}
-          >
-            <div className="flex flex-col gap-1 w-1/3 ">
-              <SelectTrigger id="system-power" className="h-8">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{`Tudo`}</SelectItem>
-                <SelectItem value="low">{`0 > 6.000kW`}</SelectItem>
-                <SelectItem value="medium">{`7.000kW - 10.000kW`}</SelectItem>
-                <SelectItem value="high">{`10.000kW > `}</SelectItem>
-              </SelectContent>
-            </div>
-          </Select>
         </form>
         <div className="h-[400px] overflow-scroll py-4">
           <Table className="overflow-y-scroll">
@@ -201,7 +176,7 @@ export default function MaterialsSelection() {
                         setSelectedAll(checked === true)
                       }
                     />
-                    Material
+                    Serviços
                   </div>
                 </TableCell>
                 <TableCell className="p-0">
@@ -249,21 +224,22 @@ export default function MaterialsSelection() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredMaterials.map((material) => (
-                <TableRow key={material.id}>
+              {filteredServices.map((service) => (
+                <TableRow key={service.id}>
                   <TableCell className="py-2">
                     <div className="flex flex-row gap-2 items-center">
                       <Checkbox
-                        checked={selectedMaterials.includes(material.id)}
-                        onCheckedChange={() =>
-                          handleSelectMaterial(material.id)
-                        }
+                        id={service.name + service.id}
+                        checked={selectedServices.includes(service.id)}
+                        onCheckedChange={() => handleSelectService(service.id)}
                       />
-                      {material.name}
+                      <Label htmlFor={service.name + service.id}>
+                        {service.name}
+                      </Label>
                     </div>
                   </TableCell>
                   <TableCell className="py-2">
-                    {material.price.toLocaleString("pt-br", {
+                    {service.price.toLocaleString("pt-br", {
                       style: "currency",
                       currency: "BRL",
                     })}{" "}
@@ -273,10 +249,12 @@ export default function MaterialsSelection() {
             </TableBody>
           </Table>
         </div>
+      </CardContent>
+      <CardContent>
         <CardFooter className="p-0 py-6 flex justify-end">
           <Button
             type="button"
-            onClick={handleDisselectAll}
+            onClick={handleSaveSelectedServices}
             className="flex flex-row gap-2"
           >
             <Plus size={16} />

@@ -1,3 +1,4 @@
+import { useMaterials } from "@/app/context/App/hooks/useMaterial";
 import { useControllerContext } from "@/app/context/Controller";
 import {
   Button,
@@ -20,6 +21,7 @@ import {
   TableRow,
   Checkbox,
   CardFooter,
+  Label,
 } from "@/components/ui";
 import { MaterialModel } from "@/core/model/material.model";
 import { PopoverContent } from "@radix-ui/react-popover";
@@ -27,7 +29,8 @@ import { ArrowDown, ArrowUp, ArrowUpDown, Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
-export default function MaterialAdjust() {
+export default function MaterialsSelection() {
+  const { addMaterials } = useMaterials();
   const { MaterialRepository } = useControllerContext();
   const [materialsRange, setMaterialsRange] = useState("low");
   const [openTablePopover, setOpenTablePopover] = useState(false);
@@ -125,6 +128,20 @@ export default function MaterialAdjust() {
     );
     setFilteredMaterials(filteredOrdered);
   }, [materials, filterByRange, ordenation, materialsRange, searchValue]);
+
+  const handleSaveSelectedMaterials = () => {
+    const selected = materials
+      .filter((material) => selectedMaterials.includes(material.id))
+      .map((material) => ({
+        ...material,
+        quantity: 1,
+        total: material.price,
+        // TODO: fix this - category is no used in the model
+        category: material.category || "",
+      }));
+    addMaterials(selected);
+    handleDisselectAll();
+  };
 
   useEffect(() => {
     if (selectedAll) {
@@ -254,12 +271,15 @@ export default function MaterialAdjust() {
                   <TableCell className="py-2">
                     <div className="flex flex-row gap-2 items-center">
                       <Checkbox
+                        id={material.name + material.id}
                         checked={selectedMaterials.includes(material.id)}
                         onCheckedChange={() =>
                           handleSelectMaterial(material.id)
                         }
                       />
-                      {material.name}
+                      <Label htmlFor={material.name + material.id}>
+                        {material.name}
+                      </Label>
                     </div>
                   </TableCell>
                   <TableCell className="py-2">
@@ -273,10 +293,12 @@ export default function MaterialAdjust() {
             </TableBody>
           </Table>
         </div>
+      </CardContent>
+      <CardContent>
         <CardFooter className="p-0 py-6 flex justify-end">
           <Button
             type="button"
-            onClick={handleDisselectAll}
+            onClick={handleSaveSelectedMaterials}
             className="flex flex-row gap-2"
           >
             <Plus size={16} />

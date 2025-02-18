@@ -1,7 +1,7 @@
 import { MaterialModel } from "@/core/model/material.model";
 
 // this is real data from the project
-const part: MaterialModel[] = [
+const material: MaterialModel[] = [
   {
     id: "1",
     name: "Cabo fases 6mm",
@@ -130,4 +130,4 @@ const part: MaterialModel[] = [
   },
 ];
 
-export default part;
+export default material;

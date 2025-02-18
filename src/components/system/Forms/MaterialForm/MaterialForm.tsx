@@ -12,7 +12,7 @@ import {
   FormMessage,
   Input,
 } from "@/components/ui";
-import LoadingButton from "../LoadingButton/LoadingButton";
+import LoadingButton from "../../LoadingButton/LoadingButton";
 import { useTransition } from "react";
 
 export default function MaterialForm() {

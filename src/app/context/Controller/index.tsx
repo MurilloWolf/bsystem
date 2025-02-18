@@ -3,12 +3,14 @@ import MemoryClient from "@/core/infra/db/memory/client";
 import MemoryModules from "@/core/infra/db/memory/modules";
 import MemoryPanels from "@/core/infra/db/memory/panel";
 import MemoryMaterial from "@/core/infra/db/memory/material";
+import MemoryService from "@/core/infra/db/memory/service";
 
 import { createContext, useContext } from "react";
 
 import IModulesRepository from "@/core/repository/modules.repository";
 import IPanelRepository from "@/core/repository/panel.repository";
 import IMaterialRepository from "@/core/repository/material.repository";
+import IServiceRepository from "@/core/repository/service.repository";
 
 type ControllerProviderProps = {
   children: React.ReactNode;
@@ -19,6 +21,7 @@ interface ControllerContextType {
   ModulesRepository: IModulesRepository;
   PanelsRepository: IPanelRepository;
   MaterialRepository: IMaterialRepository;
+  ServiceRepository: IServiceRepository;
 }
 
 export const ControllerContext = createContext<ControllerContextType>({
@@ -26,6 +29,7 @@ export const ControllerContext = createContext<ControllerContextType>({
   ModulesRepository: new MemoryModules(),
   PanelsRepository: new MemoryPanels(),
   MaterialRepository: new MemoryMaterial(),
+  ServiceRepository: new MemoryService(),
 });
 
 export default function ControllerProvider(props: ControllerProviderProps) {
@@ -34,12 +38,14 @@ export default function ControllerProvider(props: ControllerProviderProps) {
   const ModulesRepository = new MemoryModules();
   const PanelsRepository = new MemoryPanels();
   const MaterialRepository = new MemoryMaterial();
+  const ServiceRepository = new MemoryService();
 
   const controllerContextValue = {
     ClientRepository,
     ModulesRepository,
     PanelsRepository,
     MaterialRepository,
+    ServiceRepository,
   };
 
   return (

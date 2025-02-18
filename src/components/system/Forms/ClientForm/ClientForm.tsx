@@ -13,6 +13,7 @@ import {
   SheetTrigger,
   Button,
 } from "@/components/ui";
+import { InputLoading, LoadingButton } from "@/components/system";
 import { useForm } from "react-hook-form";
 import {
   ClientFormDefaultValues,
@@ -21,8 +22,6 @@ import {
 } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
-import LoadingButton from "../LoadingButton/LoadingButton";
-import InputLoading from "../InputLoading/InputLoading";
 import useBudgetContext from "@/app/context/Budget/useBudgetContext";
 import { useControllerContext } from "@/app/context/Controller";
 import CreateClient from "@/core/use-cases/create-client";
@@ -43,9 +42,25 @@ export default function ClientForm() {
     zodForm.reset();
   };
 
+  function validateZipCode(zipCode: string): string | null {
+    const zipPattern = /^\d{5}-\d{3}$|^\d+$/;
+
+    if (!zipPattern.test(zipCode)) {
+      return null;
+    }
+
+    return zipCode.replace(/\D/g, "");
+  }
+
   const fetchZipCode = async (zipCode: string) => {
     startTransitionZip(async () => {
-      const response = await fetch(`https://viacep.com.br/ws/${zipCode}/json/`);
+      const zip = validateZipCode(zipCode);
+      if (!zip) {
+        zodForm.setError("zip", { type: "manual", message: "CEP inválido" });
+        return;
+      }
+
+      const response = await fetch(`https://viacep.com.br/ws/${zip}/json/`);
       const data = await response.json();
       if (data.uf && data.localidade) {
         zodForm.setValue("uf", data.uf);
@@ -57,11 +72,19 @@ export default function ClientForm() {
     });
   };
 
+  const handleCancel = () => {
+    clearForm();
+    setOpen(false);
+  };
+
   const handleZipCodeChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const zipCode = e.target.value;
-    if (parseInt(zipCode) && zipCode.length === 8) {
+    console.log("zipCode", zipCode);
+    const validateZip = validateZipCode(zipCode);
+    console.log("validateZip", validateZip);
+    if (validateZip && zipCode.length >= 8) {
       fetchZipCode(zipCode);
       zodForm.clearErrors("zip");
       return;
@@ -82,7 +105,7 @@ export default function ClientForm() {
       address: 255,
       city: 255,
       state: 2,
-      zip: 8,
+      zip: 9,
       neighborhood: 255,
       uf: 2,
     };
@@ -102,11 +125,23 @@ export default function ClientForm() {
       const response = await createClient.execute(payload);
       if (!response) return;
 
+      selectClient(response);
       setOpen(false);
       clearForm();
-      selectClient(response);
     });
   });
+
+  const inputTypes = {
+    name: "text",
+    email: "email",
+    phone: "tel",
+    address: "text",
+    city: "text",
+    state: "text",
+    zip: "text",
+    neighborhood: "text",
+    uf: "text",
+  };
 
   return (
     <section>
@@ -150,7 +185,9 @@ export default function ClientForm() {
                                 className="h-8 w-full max-w-[350px]"
                                 {...field}
                                 id={key}
-                                type="text"
+                                type={
+                                  inputTypes[key as keyof typeof inputTypes]
+                                }
                                 placeholder=""
                                 disabled={isPendingZip}
                                 maxLength={calcMaxLenght(key)}
@@ -184,7 +221,7 @@ export default function ClientForm() {
                   type="button"
                   className="w-full"
                   variant="ghost"
-                  onClick={clearForm}
+                  onClick={handleCancel}
                 >
                   Cancelar
                 </Button>

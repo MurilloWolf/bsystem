@@ -9,10 +9,13 @@ import {
 } from "@/components/ui";
 
 import {
+  CheckoutInfo,
   MaterialAdjust,
   MaterialsSelection,
   PanelsDirections,
   ProjectSettings,
+  ServicesAdjust,
+  ServicesSelection,
 } from "@/components/system";
 import useBudgetContext from "@/app/context/Budget/useBudgetContext";
 import { useRouter } from "next/navigation";
@@ -21,7 +24,7 @@ import { useEffect, useState } from "react";
 export default function BudgetPage() {
   const { client } = useBudgetContext();
   const [tabStep, setTabStep] = useState("project");
-  const [tabDisabled, setTabDisabled] = useState(1);
+  const [tabDisabled, setTabDisabled] = useState(4);
   const [progress, setProgress] = useState(0);
 
   const steps = [
@@ -98,36 +101,30 @@ export default function BudgetPage() {
             <MaterialsSelection />
           </Card>
           <Card className="col-span-6 row-start-1 row-span-1 col-start-6 min-h-[650px] ">
-            <MaterialAdjust />
+            <MaterialAdjust nextStep={nextStep} />
+          </Card>
+        </div>
+      </TabsContent>
+      <TabsContent value="services">
+        <div className="h-full  grid grid-cols-12 grid-rows-[1fr] p-4 gap-4">
+          <Card className="col-span-5 row-start-1 col-start-1 row-span-1 min-h-[650px]">
+            <ServicesSelection />
+          </Card>
+          <Card className="col-span-6 row-start-1 row-span-1 col-start-6 min-h-[650px] ">
+            <ServicesAdjust nextStep={nextStep} />
+          </Card>
+        </div>
+      </TabsContent>
+      <TabsContent value="budget">
+        <div className="h-full  grid grid-cols-12 grid-rows-[1fr] p-4  gap-4">
+          <Card className="col-span-5 row-start-1 col-start-1 row-span-1 min-h-[650px] ">
+            <CheckoutInfo />
+          </Card>
+          <Card className="col-span-6 row-start-1 row-span-1 col-start-6 min-h-[650px] ">
+            <ServicesAdjust nextStep={nextStep} />
           </Card>
         </div>
       </TabsContent>
     </Tabs>
   );
 }
-
-// CLient view card
-/* <Card className="col-span-5 border-0  h-[140px] flex justify-between flex-row ">
-            <CardHeader className=" w-full">
-              <div className="flex flex-row justify-between items-center">
-                <div className="text-xs font-light text-gray-500">
-                  <h2 className={`text-black text-2xl text-bolder`}>
-                    {client.name}
-                  </h2>
-                  <p className=" flex flex-row items-center">
-                    {client?.city} - {client?.uf}
-                    <Edit2Icon
-                      size={12}
-                      className="ml-2 hover:stroke-black cursor-pointer"
-                    />
-                  </p>
-                  <p>{client?.email}</p>
-                  <p>{client?.phone}</p>
-                </div>
-                <Share
-                  size={18}
-                  className="self-start cursor-pointer hover:stroke-black stroke-gray-500"
-                />
-              </div>
-            </CardHeader>
-          </Card> */

@@ -10,9 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui";
-import ClientForm from "../ClientForm/ClientForm";
+import { ClientForm, ClientSelector } from "../";
+
 import useBudgetContext from "@/app/context/Budget/useBudgetContext";
-import ClientSelector from "../ClientForm/ClientSelector";
 import { useRouter } from "next/navigation";
 
 export default function BudgetWizzard() {

@@ -1,7 +1,18 @@
 import { Button, buttonVariants } from "./button";
 import { Label } from "./label";
 import { Input } from "./input";
-import { Separator } from "@radix-ui/react-separator";
+import { Separator } from "./separator";
+import {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+} from "./command";
 import {
   useFormField,
   Form,
@@ -94,6 +105,15 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
 import { Progress } from "./progress";
 import { Checkbox } from "./checkbox";
 export {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
   Checkbox,
   Progress,
   Tabs,

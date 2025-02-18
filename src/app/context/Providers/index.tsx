@@ -1,17 +1,20 @@
 "use client";
+import { AppProvider } from "../App/AppContext";
 import BudgetProvider from "../Budget/BudgetProvider";
 import ControllerProvider from "../Controller";
 
-export type AppProvidersProps = {
+export type ProvidersProps = {
   children: React.ReactNode;
 };
 
-export default function AppProviders(props: AppProvidersProps) {
+export default function Providers(props: ProvidersProps) {
   const { children } = props;
 
   return (
-    <ControllerProvider>
-      <BudgetProvider>{children}</BudgetProvider>;
-    </ControllerProvider>
+    <AppProvider>
+      <ControllerProvider>
+        <BudgetProvider>{children}</BudgetProvider>;
+      </ControllerProvider>
+    </AppProvider>
   );
 }
