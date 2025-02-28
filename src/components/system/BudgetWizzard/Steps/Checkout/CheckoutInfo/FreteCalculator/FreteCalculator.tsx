@@ -3,7 +3,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import AddressAutoComplete from "@/components/system/AddressAutoComplete/AddressAutoComplete";
 import { SuggestCity } from "@/lib/SuggestLocation/types";
-import fetchDistanceDriving from "@/lib/DistanceBetweenCities/getDistanceBetweenCities";
+import fetchDistanceDriving from "@/lib/DistanceBetweenCities/fetchDistanceDriving";
 import LoadingButton from "@/components/system/LoadingButton/LoadingButton";
 
 export default function FreteCalculator() {

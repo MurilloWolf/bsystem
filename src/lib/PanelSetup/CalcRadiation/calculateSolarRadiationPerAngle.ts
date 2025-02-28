@@ -1,45 +1,7 @@
-export type InputFormat = {
-  type: string;
-  geometry: {
-    type: string;
-    coordinates: number[];
-  };
-  properties: {
-    parameter: {
-      ALLSKY_SFC_SW_DNI: {
-        [key: string]: number;
-      };
-    };
-  };
-};
+import { ApiResponse } from "../NasaRadiation/types";
+import { Directions, RadiationPerAngle } from "./types";
 
-export type Directions =
-  | "N"
-  | "NE"
-  | "NNE"
-  | "ENE"
-  | "E"
-  | "SE"
-  | "ESE"
-  | "SSE"
-  | "S"
-  | "SW"
-  | "SSW"
-  | "WSW"
-  | "W"
-  | "NW"
-  | "NNW"
-  | "WNW";
-
-export type RadiationByAngle = {
-  [key: string]: {
-    [key: string]: {
-      [key: string]: number;
-    };
-  };
-};
-
-function calculateSolarRadiation(data: InputFormat, location: string) {
+function calculateSolarRadiationPerAngle(data: ApiResponse) {
   const directions: Directions[] = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
   const angles = Array.from({ length: 19 }, (_, i) => i * 5); // Inclinações de 0 a 90 graus
   const MOTHS = 12;
@@ -62,7 +24,7 @@ function calculateSolarRadiation(data: InputFormat, location: string) {
     NNW: 337.5,
   };
 
-  const results: RadiationByAngle = {};
+  const results: RadiationPerAngle = {};
 
   // Iterar sobre cada direção cardeal
   directions.forEach((direction) => {
@@ -74,9 +36,9 @@ function calculateSolarRadiation(data: InputFormat, location: string) {
       results[direction][`${angle}`] = {};
       let totalRadiation = 0;
       // Calcular a radiação para cada mês
-      Object.keys(data.properties.parameter.ALLSKY_SFC_SW_DNI).forEach(
+      Object.keys(data.properties.parameter.ALLSKY_SFC_SW_DWN).forEach(
         (month) => {
-          const dni = data.properties.parameter.ALLSKY_SFC_SW_DNI[month];
+          const dni = data.properties.parameter.ALLSKY_SFC_SW_DWN[month];
 
           const adjustedRadiation =
             dni *
@@ -94,9 +56,6 @@ function calculateSolarRadiation(data: InputFormat, location: string) {
     });
   });
 
-  return {
-    location,
-    results,
-  };
+  return results;
 }
-export default calculateSolarRadiation;
+export default calculateSolarRadiationPerAngle;

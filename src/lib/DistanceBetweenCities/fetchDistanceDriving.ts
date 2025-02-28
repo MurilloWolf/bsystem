@@ -10,17 +10,24 @@ const fetchDistanceDriving = async (
   origin: Coordinates,
   destination: Coordinates
 ): Promise<number> => {
+  if (
+    origin.latitude === destination.latitude &&
+    origin.longitude === destination.longitude
+  ) {
+    return 0;
+  }
+
   const originString = `${origin.longitude},${origin.latitude}`;
   const destinationString = `${destination.longitude},${destination.latitude}`;
   const endpoint = `${BASE_URL}${originString};${destinationString}?access_token=${TOKEN}`;
+
   try {
     const response = await fetch(endpoint);
     const data = await response.json();
-    console.log(data);
-    return data.routes[0].distance;
+    return data?.routes[0]?.distance || 0;
   } catch (error) {
-    console.log(error);
-    return 0;
+    console.error(error);
+    throw new Error("Error fetching the distance");
   }
 };
 

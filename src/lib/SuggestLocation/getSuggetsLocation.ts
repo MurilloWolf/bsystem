@@ -19,11 +19,17 @@ const fetchSuggestions = async (
 };
 
 export const formatSuggestions = (data: Feature[]) => {
-  return data.map((city) => ({
-    label: `${city.properties.name}, ${city.properties.context.region.name}`,
-    value: city.properties.name.toLowerCase(),
-    coordinates: city.properties.coordinates,
-  }));
+  if (!data) return [];
+
+  return data
+    .filter((item) => item && item.properties)
+    .map((city) => {
+      return {
+        label: `${city.properties.name}, ${city.properties.context.region.name}`,
+        value: city.properties.name.toLowerCase(),
+        coordinates: city.properties.coordinates,
+      };
+    });
 };
 
 export default fetchSuggestions;

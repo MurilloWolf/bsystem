@@ -9,6 +9,7 @@ const input = {
   geometry: { type: "Point", coordinates: [-51.374, -22.116, 407.49] },
   properties: {
     parameter: {
+      // DNI or DWN
       ALLSKY_SFC_SW_DNI: {
         202201: 4.35,
         202202: 5.75,
