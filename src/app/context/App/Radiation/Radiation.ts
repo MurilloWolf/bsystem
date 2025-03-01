@@ -1,18 +1,15 @@
-import { RadiationAction, RadiationActionTypes } from "./types";
+import { RadiationAction, RadiationActionTypes, RadiationType } from "./types";
 
-const radiationInitialState = {
-  radiation: null,
-};
+export const radiationInitialState: RadiationType = null;
 
 export default function RadiationReducer(
   state = radiationInitialState,
   action: RadiationAction
-) {
+): RadiationType {
   switch (action.type) {
     case RadiationActionTypes.UPDATE_RADIATION:
       return {
-        ...state,
-        radiation: action.payload.radiation,
+        ...action.payload,
       };
 
     default:
