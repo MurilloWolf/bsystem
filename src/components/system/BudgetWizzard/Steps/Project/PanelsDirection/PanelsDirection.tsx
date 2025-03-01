@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import PanelsAnglesTemplate from "./PanelsAnglesTemplate";
 import useLocationRadiation from "@/app/hooks/useLocationRadiation/useLocationRadiation";
 import { useEffect } from "react";
+import useRadiation from "@/app/context/App/hooks/useRadiation";
 
 interface PanelDirectionRowProps {
   index: number;
@@ -154,11 +155,9 @@ export default function PanelsDirections(props: PanelsDirectionsProps) {
   const { nextStep } = props;
   const zodForm = useForm();
 
-  const { changeLocation, radiationPerAngle } = useLocationRadiation();
-  console.log("render");
+  const { fetchRadiation } = useRadiation();
   useEffect(() => {
-    // changeLocation({ latitude: -51.374, longitude: -22.116 });
-    console.log("Radiation", radiationPerAngle);
+    fetchRadiation({ latitude: -51.374, longitude: -22.116 });
   }, []);
 
   const dash = [
@@ -189,6 +188,7 @@ export default function PanelsDirections(props: PanelsDirectionsProps) {
     console.log(data);
     nextStep();
   });
+
   return (
     <div>
       <CardHeader className="text-md">

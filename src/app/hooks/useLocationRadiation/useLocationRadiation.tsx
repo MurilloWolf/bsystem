@@ -3,6 +3,7 @@ import fetchNasaDetails from "@/lib/PanelSetup/NasaRadiation/fetchNasaDetails";
 import { ApiResponse, Location } from "@/lib/PanelSetup/NasaRadiation/types";
 import calculateSolarRadiationPerAngle from "@/lib/PanelSetup/CalcRadiation/calculateSolarRadiationPerAngle";
 import { RadiationPerAngle } from "@/lib/PanelSetup/CalcRadiation/types";
+import radiationMock from "../../../../mock/radiation";
 
 export default function useLocationRadiation() {
   const [radiationPerAngle, setRadiationPerAngle] =
@@ -15,24 +16,18 @@ export default function useLocationRadiation() {
       setError(null);
 
       try {
-        const data = await fetchNasaDetails(location);
-        const radiationPerAngle = calculateSolarRadiationPerAngle(
-          data as ApiResponse
-        );
-        console.log("RAD", radiationPerAngle);
-        setRadiationPerAngle(radiationPerAngle);
+        // const data = await fetchNasaDetails(location);
+        // const radiationPerAngle = calculateSolarRadiationPerAngle(
+        //   data as ApiResponse
+        // );
+        console.log("fetchRadiation", radiationPerAngle);
+        // setRadiationPerAngle(radiationPerAngle);
+        setRadiationPerAngle(radiationMock);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       }
     });
   }, []);
 
-  const changeLocation = useCallback(
-    async (location: Location) => {
-      await fetchRadiationData(location);
-    },
-    [fetchRadiationData]
-  );
-
-  return { changeLocation, isPending, error, radiationPerAngle };
+  return { fetchRadiationData, isPending, error, radiationPerAngle };
 }
